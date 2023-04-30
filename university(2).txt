@@ -1,0 +1,57 @@
+1) SELECT students.name, students.surname, degrees.name 
+FROM `students`
+INNER JOIN `degrees`
+ON students.degree_id = degrees.id
+WHERE degrees.name = 'Corso di Laurea in Economia';
+
+2)SELECT `degrees`.`id`, `degrees`.`name` AS `corso_di_laurea`, `degrees`.`level`, `departments`.`name` AS `dipartimento` 
+FROM `departments`
+INNER JOIN degrees
+ON departments.id = degrees.department_id
+WHERE departments.name = 'Dipartimento di Neuroscienze'
+AND degrees.level = 'Magistrale';
+
+3) SELECT teachers.name, teachers.surname, course_teacher.course_id AS 'Corsi', teachers.id AS `teachers_id`
+FROM `teachers`
+INNER JOIN course_teacher
+ON course_teacher.course_id = teachers.id
+WHERE teachers.id = 44;
+
+4) SELECT students.name, students.surname, students.degree_id AS `degree_id`, degrees.name AS `degree_name`, degrees.department_id AS  `degree_dep_id`, departments.name
+FROM `students`
+INNER JOIN degrees
+ON students.degree_id = degrees.id
+INNER JOIN departments
+ON departments.id = degrees.department_id
+ORDER BY students.surname, students.name ASC;
+
+5) SELECT degrees.name AS `degree_name`,degrees.id, teachers.name AS `teacher_name`, teachers.surname AS `teacher_surname`, teachers.id, `courses`.`name` AS `course_name`  
+FROM degrees
+LEFT JOIN courses
+ON degrees.id = courses.degree_id
+LEFT JOIN course_teacher
+ON courses.id = course_teacher.course_id
+LEFT JOIN teachers
+ON course_teacher.teacher_id = teachers.id;
+
+6) SELECT teachers.name AS `teacher_name`, teachers.surname AS `teacher_surname`, departments.name AS `department_name` 
+FROM teachers
+LEFT JOIN course_teacher
+ON teachers.id  = course_teacher.teacher_id
+LEFT JOIN courses 
+ON  course_teacher.course_id = courses.id
+LEFT JOIN degrees
+ON courses.degree_id = degrees.id
+LEFT JOIN departments
+ON degrees.department_id = departments.id
+WHERE departments.name = 'Dipartimento di Matematica';
+
+7) SELECT COUNT(`exam_student`.`student_id`) AS `attempt`, courses.name AS `course_name`, students.name, students.surname
+FROM students
+INNER JOIN exam_student
+ON students.id = exam_student.student_id
+INNER JOIN exams
+ON exam_student.exam_id = exams.id
+INNER JOIN courses
+ON exams.course_id = courses.id
+GROUP BY students.id,  courses.id;
